@@ -14,8 +14,9 @@ void nhapsinhvien(sinhvien *sv) {
     printf("Nhap ma so sinh vien: ");
     scanf("%d", &sv->maso);
     printf("Nhap ten sinh vien: ");
-    getchar(); // Xoa bo nho dem
-    scanf("%[^\n]s",&sv->ten); 
+    getchar(); // Xóa bộ nhớ đệm
+    fgets(sv->ten, 50, stdin);
+    sv->ten[strcspn(sv->ten, "\n")] = '\0'; // Xóa ký tự xuống dòng
     printf("Nhap diem Toan: ");
     scanf("%f", &sv->diemtoan);
     printf("Nhap diem Ly: ");
@@ -24,7 +25,7 @@ void nhapsinhvien(sinhvien *sv) {
     scanf("%f", &sv->diemhoa);
 }
 
-void hienthisinhvien(sinhvien sv) {
+void hientsinhvien(sinhvien sv) {
     printf("\nMa so: %d\n", sv.maso);
     printf("Ten: %s\n", sv.ten);
     printf("Diem Toan: %.2f\n", sv.diemtoan);
@@ -33,29 +34,45 @@ void hienthisinhvien(sinhvien sv) {
 }
 
 void themsinhvien(sinhvien *danhsach, int *soluong) {
-    printf("Them sinh vien thu %d\n", *soluong + 1);
+    printf("\nThem sinh vien thu %d:\n", *soluong + 1);
     nhapsinhvien(&danhsach[*soluong]);
     (*soluong)++;
 }
 
 void hienthidanhsach(sinhvien *danhsach, int soluong) {
     for (int i = 0; i < soluong; i++) {
-        printf("\nSinh vien thu %d\n", i + 1);
-        hienthisinhvien(danhsach[i]);
+        printf("\n--- Sinh vien thu %d ---", i + 1);
+        hientsinhvien(danhsach[i]);
+    }
+}
+
+void timkiemsinhvien(sinhvien *danhsach, int soluong, int masocantim) {
+    int timthay = 0;
+    for (int i = 0; i < soluong; i++) {
+        if (danhsach[i].maso == masocantim) {
+            printf("\nSinh vien voi ma so %d duoc tim thay:\n", masocantim);
+            hientsinhvien(danhsach[i]);
+            timthay = 1;
+            break;
+        }
+    }
+    if (!timthay) {
+        printf("\nKhong tim thay sinh vien voi ma so %d.\n", masocantim);
     }
 }
 
 int main() {
     sinhvien *danhsach;
-    int soluong = 0; // Khai bao va khoi tao bien soluong
-    int luachon = 0;
+    int soluong = 0;
+    int luachon = -1, masocantim;
 
-    danhsach = (sinhvien*)malloc(sizeof(sinhvien) * 100);
+    danhsach = (sinhvien *)malloc(100 * sizeof(sinhvien));
 
     while (luachon != 0) {
-        printf("\n==== Menu lua chon ====\n");
+        printf("\n===== MENU QUAN LY SINH VIEN =====\n");
         printf("1. Them sinh vien\n");
         printf("2. Hien thi danh sach sinh vien\n");
+        printf("3. Tim kiem sinh vien theo ma so\n");
         printf("0. Thoat\n");
         printf("Lua chon: ");
         scanf("%d", &luachon);
@@ -67,11 +84,16 @@ int main() {
             case 2:
                 hienthidanhsach(danhsach, soluong);
                 break;
+            case 3:
+                printf("Nhap ma so sinh vien can tim: ");
+                scanf("%d", &masocantim);
+                timkiemsinhvien(danhsach, soluong, masocantim);
+                break;
             case 0:
-                printf("Thoat chuong trinh\n");
+                printf("Thoat chuong trinh.\n");
                 break;
             default:
-                printf("Khong hop le\n");
+                printf("Lua chon khong hop le!\n");
         }
     }
 

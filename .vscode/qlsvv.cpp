@@ -67,13 +67,9 @@ int main() {
     int luachon, masocantim;
 
     danhsach = (sinhvien *)malloc(100 * sizeof(sinhvien));
-    if (danhsach == NULL) {
-        printf("Khong the cap phat bo nho.\n");
-        return 1;
-    }
 
     luachon = 0;
-    while (true) {
+    while (luachon != 0) {
         printf("\n===== MENU QUAN LY SINH VIEN =====\n");
         printf("1. Them sinh vien\n");
         printf("2. Hien thi danh sach sinh vien\n");
@@ -81,11 +77,6 @@ int main() {
         printf("0. Thoat\n");
         printf("Lua chon: ");
         scanf("%d", &luachon);
-
-        if (luachon == 0) {
-            printf("Thoat chuong trinh.\n");
-            break;
-        }
 
         switch (luachon) {
             case 1:
@@ -98,6 +89,9 @@ int main() {
                 printf("Nhap ma so sinh vien can tim: ");
                 scanf("%d", &masocantim);
                 timkiemsinhvien(danhsach, soluong, masocantim);
+                break;
+            case 0:
+                printf("Thoat chuong trinh.\n");
                 break;
             default:
                 printf("Lua chon khong hop le!\n");

@@ -73,7 +73,7 @@ int main() {
     }
 
     luachon = 0;
-    while (true) {
+    while (luachon != 0) {
         printf("\n===== MENU QUAN LY SINH VIEN =====\n");
         printf("1. Them sinh vien\n");
         printf("2. Hien thi danh sach sinh vien\n");
